@@ -1,31 +1,40 @@
 {
   "name": "pweb-express-p31-2025",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Backend Express IT Literature Shop Modul 3",
+  "main": "dist/app.js",
+  "type": "commonjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "dev": "ts-node-dev --respawn src/app.ts",
+    "start": "node dist/app.js",
+    "prisma:migrate": "dotenv -e .env -- npx prisma migrate dev",
+    "prisma:generate": "dotenv -e .env -- npx prisma generate",
+    "prisma:studio": "dotenv -e .env -- npx prisma studio"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/pikaapik-io/pweb-express-p31-2025.git"
-  },
-  "keywords": [],
+  "keywords": [
+    "express",
+    "typescript",
+    "prisma",
+    "pweb"
+  ],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/pikaapik-io/pweb-express-p31-2025/issues"
-  },
-  "homepage": "https://github.com/pikaapik-io/pweb-express-p31-2025#readme",
   "dependencies": {
     "@prisma/client": "^6.18.0",
-    "express": "^5.1.0",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
     "prisma": "^6.18.0"
   },
   "devDependencies": {
-    "@types/express": "^5.0.3",
-    "@types/node": "^24.9.1",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/node": "^20.14.12",
+    "dotenv-cli": "^7.4.2",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.5.4"
   }
 }
