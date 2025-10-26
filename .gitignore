@@ -1,5 +1,16 @@
-node_modules
-# Keep environment variables out of version control
+Node
+
+node_modules/
+dist/
 .env
 
-/generated/prisma
+Logs
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+Prisma
+
+*.sqlite
+*.sqlite-journal

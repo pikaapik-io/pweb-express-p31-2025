@@ -1,3 +1,6 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,36 +11,33 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   username  String?
   password  String
-  email     String   @unique
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  orders Order[]
-
-  @@map("users")
+  email     String    @unique
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  // Relasi ke Order (Transaction)
+  orders    Order[]
 }
 
 model Book {
-  id              String    @id @default(uuid())
-  title           String    @unique
+  id              String      @id @default(uuid())
+  title           String      @unique
   writer          String
   publisher       String
-  publicationYear Int       @map("publication_year")
+  publicationYear Int         @map("publication_year")
   description     String?
-  price           Float
-  stockQuantity   Int       @map("stock_quantity")
-  genreId         String    @map("genre_id")
-  createdAt       DateTime  @default(now()) @map("created_at")
-  updatedAt       DateTime  @updatedAt @map("updated_at")
-  deletedAt       DateTime? @map("deleted_at")
-
-  genre      Genre       @relation(fields: [genreId], references: [id])
-  orderItems OrderItem[]
-
-  @@map("books")
+  price           Float // 'number' di SQL diterjemahkan ke Float
+  stockQuantity   Int         @map("stock_quantity")
+  genreId         String      @map("genre_id")
+  createdAt       DateTime    @default(now()) @map("created_at")
+  updatedAt       DateTime    @updatedAt @map("updated_at")
+  deletedAt       DateTime?   @map("deleted_at") // Untuk Soft Delete
+  // Relasi ke Genre
+  genre           Genre       @relation(fields: [genreId], references: [id])
+  // Relasi ke OrderItem (TransactionItem)
+  orderItems      OrderItem[]
 }
 
 model Genre {
@@ -45,35 +45,37 @@ model Genre {
   name      String    @unique
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
-
-  books Book[]
-
-  @@map("genres")
+  deletedAt DateTime? @map("deleted_at") // Untuk Soft Delete
+  // Relasi ke Book
+  books     Book[]
 }
 
+// CATATAN: Model ini bernama 'Order' (dari SQL 'orders')
+// Ini akan digunakan untuk rute '/transactions'
 model Order {
-  id        String   @id @default(uuid())
-  userId    String   @map("user_id")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  user  User        @relation(fields: [userId], references: [id])
-  items OrderItem[]
-
-  @@map("orders")
+  id        String      @id @default(uuid())
+  userId    String      @map("user_id")
+  createdAt DateTime    @default(now()) @map("created_at")
+  updatedAt DateTime    @updatedAt @map("updated_at")
+  // Relasi ke User
+  user      User        @relation(fields: [userId], references: [id])
+  // Relasi ke OrderItem
+  items     OrderItem[]
 }
 
+// CATATAN: Model ini bernama 'OrderItem' (dari SQL 'order_items')
+// Ini adalah bagian dari 'Transaction'
 model OrderItem {
   id        String   @id @default(uuid())
   quantity  Int
+  // Harga buku saat dibeli, untuk jaga-jaga jika harga buku berubah
+  priceAtBuy Float
   orderId   String   @map("order_id")
   bookId    String   @map("book_id")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-
-  order Order @relation(fields: [orderId], references: [id])
-  book  Book  @relation(fields: [bookId], references: [id])
-
-  @@map("order_items")
+  // Relasi ke Order (Transaction)
+  order     Order    @relation(fields: [orderId], references: [id])
+  // Relasi ke Book
+  book      Book     @relation(fields: [bookId], references: [id])
 }
