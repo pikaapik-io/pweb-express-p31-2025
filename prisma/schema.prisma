@@ -28,6 +28,8 @@ model Book {
   publisher       String
   publicationYear Int         @map("publication_year")
   description     String?
+  isbn            String?    // Optional ISBN
+  condition       String?    // Optional condition (e.g., "new", "used")
   price           Float // 'number' di SQL diterjemahkan ke Float
   stockQuantity   Int         @map("stock_quantity")
   genreId         String      @map("genre_id")
