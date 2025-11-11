@@ -151,10 +151,10 @@ export const getTransactionById = async (id: string) => {
     total_quantity += item.quantity;
     total_price += subtotal;
     return {
-      book_id: item.bookId,
-      book_title: item.book.title,
+      book_id: item.id,
+      title: item.book.title,
       quantity: item.quantity,
-      subtotal_price: subtotal,
+      price: item.priceAtBuy,
     };
   });
 
